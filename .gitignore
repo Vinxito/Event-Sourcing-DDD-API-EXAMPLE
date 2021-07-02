@@ -6,7 +6,6 @@ data/
 
 # files
 *.iml
-\#*
 .cache
 .classpath
 .idea
