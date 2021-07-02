@@ -1,0 +1,109 @@
+version: '3.7'
+services:
+
+  ddd_event_sourcing_hexagonal:
+    container_name: ddd_event_sourcing_hexagonal
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "8087:8080"
+    volumes:
+      - .:/app:delegated
+    env_file:
+      - .env
+    tty: true
+    depends_on:
+      - ddd_event_sourcing_hexagonal_kafka
+      - ddd_event_sourcing_hexagonal_mongodb
+      - ddd_event_sourcing_hexagonal_elasticsearch
+
+  ddd_event_sourcing_hexagonal_zookeeper:
+    image: wurstmeister/zookeeper
+    container_name: ddd_event_sourcing_hexagonal_zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      - KAFKA_ADVERTISED_HOST_NAME=ddd_event_sourcing_hexagonal_zookeeper
+
+  ddd_event_sourcing_hexagonal_kafka:
+    image: wurstmeister/kafka
+    container_name: ddd_event_sourcing_hexagonal_kafka
+    ports:
+      - "9092:9092"
+    environment:
+      - KAFKA_ADVERTISED_HOST_NAME=127.0.0.1
+      - KAFKA_ADVERTISED_PORT=9092
+      - KAFKA_ZOOKEEPER_CONNECT=ddd_event_sourcing_hexagonal_zookeeper:2181
+    depends_on:
+      - ddd_event_sourcing_hexagonal_zookeeper
+
+  ddd_event_sourcing_hexagonal_mongodb:
+    image: mongo:4.4.2
+    container_name: ddd_event_sourcing_hexagonal_mongodb
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: dummy
+      MONGO_INITDB_ROOT_PASSWORD: dummy
+
+  ddd_event_sourcing_hexagonal_elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
+    container_name: ddd_event_sourcing_hexagonal_elasticsearch
+    ports:
+      - '9200:9200'
+      - '9300:9300'
+    environment:
+      - "ELASTIC_PASSWORD=dummy"
+      - "bootstrap.memory_lock=true"
+      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+      - "discovery.type=single-node"
+      - "http.port=9200"
+      - "http.cors.enabled=true"
+      - "http.cors.allow-origin=http://localhost:1358,http://127.0.0.1:1358"
+      - "http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization"
+      - "http.cors.allow-credentials=true"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - "./data:/usr/share/elasticsearch/data:rw"
+
+  ddd_event_sourcing_hexagonal_logstash:
+    image: docker.elastic.co/logstash/logstash:7.5.0
+    container_name: ddd_event_sourcing_hexagonal_logstash
+    environment:
+      - "ELASTIC_PASSWORD=dummy"
+    ports: [ '9600:9600' ]
+    depends_on:
+      - 'ddd_event_sourcing_hexagonal_elasticsearch'
+    volumes:
+      - '../etc/logstash/pipeline:/usr/share/logstash/pipeline'
+      - '../var/log:/log'
+
+  ddd_event_sourcing_hexagonal_kibana:
+    image: docker.elastic.co/kibana/kibana:7.5.0
+    container_name: ddd_event_sourcing_hexagonal_kibana
+    environment:
+      - "ELASTIC_PASSWORD=dummy"
+    ports: [ '5601:5601' ]
+    depends_on:
+      - 'ddd_event_sourcing_hexagonal_elasticsearch'
+
+#  ddd_event_sourcing_hexagonal_prometheus:
+#    container_name: ddd_event_sourcing_hexagonal_prometheus
+#    image: prom/prometheus:v2.19.0
+#    user: root
+#    volumes:
+#      - ../etc/prometheus/:/etc/prometheus/
+#      - ../var/prometheus/prometheus_data:/prometheus
+#    command:
+#      - '--config.file=/etc/prometheus/prometheus.yml'
+#      - '--storage.tsdb.path=/prometheus'
+#      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+#      - '--web.console.templates=/usr/share/prometheus/consoles'
+#    ports:
+#      - 9090:9090

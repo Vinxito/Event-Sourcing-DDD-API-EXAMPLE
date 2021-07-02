@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.dummy.vinxi</groupId>
+    <artifactId>ddd_event_sourcing_hexagonal</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+
+    <name>ddd_event_sourcing_hexagonal</name>
+    <description>Description on application</description>
+    <packaging>pom</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>11</java.version>
+        <javafaker.version>0.15</javafaker.version>
+    </properties>
+
+    <modules>
+        <module>src/shared</module>
+        <module>src/printer</module>
+        <module>src/user</module>
+        <module>apps</module>
+    </modules>
+
+</project>

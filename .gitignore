@@ -1,0 +1,16 @@
+# directories
+target/
+data/
+.idea/
+.var/
+
+# files
+*.iml
+\#*
+.cache
+.classpath
+.idea
+.idea_modules
+.project
+
+
