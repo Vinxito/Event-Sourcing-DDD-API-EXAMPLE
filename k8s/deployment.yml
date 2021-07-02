@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: proyectDDD
+  labels:
+    app: dddAndHexagonalArchitecture
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: dddAndHexagonalArchitecture
+  template:
+    metadata:
+      labels:
+        app: proyectDDD
+    spec:
+      containers:
+        - name: proyectDDD
+          image: proyectDDD:latest
+          ports:
+            - containerPort: 8087
+          imagePullPolicy: IfNotPresent
