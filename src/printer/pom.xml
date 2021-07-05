@@ -9,18 +9,18 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>device</artifactId>
-    <version>${device.version}</version>
+    <artifactId>printer</artifactId>
+    <version>${printer.version}</version>
 
-    <name>device</name>
-    <description>Microservice for devices</description>
+    <name>printer</name>
+    <description>Microservice for printers</description>
 
     <properties>
-        <base-package>com.dummy.vinxi</base-package>
+        <base-package>com.dummy</base-package>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>11</java.version>
         <maven-compiler.version>3.8.1</maven-compiler.version>
-        <device.version>0.0.1-SNAPSHOT</device.version>
+        <printer.version>0.0.1-SNAPSHOT</printer.version>
         <shared.version>0.0.1-SNAPSHOT</shared.version>
     </properties>
 
@@ -79,12 +79,14 @@
             <version>0.0.20131108.vaadin1</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>com.github.javafaker</groupId>
             <artifactId>javafaker</artifactId>
             <version>0.15</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>

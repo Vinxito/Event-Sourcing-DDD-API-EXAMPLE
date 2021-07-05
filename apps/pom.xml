@@ -18,15 +18,15 @@
     </properties>
 
     <dependencies>
-        <dependency>
+      <!--  <dependency>
             <groupId>com.dummy.vinxi</groupId>
             <artifactId>shared</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-        </dependency>
+        </dependency>-->
 
         <dependency>
             <groupId>com.dummy.vinxi</groupId>
-            <artifactId>device</artifactId>
+            <artifactId>printer</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
@@ -162,7 +162,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.dummy.vinxi.printer.config.Starter</mainClass>
+                    <mainClass>com.dummy.config.Starter</mainClass>
                 </configuration>
                 <executions>
                     <execution>
