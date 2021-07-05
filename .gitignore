@@ -3,6 +3,7 @@ target/
 data/
 .idea/
 .var/
+var/
 
 # files
 *.iml
